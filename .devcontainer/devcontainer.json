@@ -1,0 +1,46 @@
+{
+  "name": "Audio Gurbani (Admin)",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/guiyomh/features/just:0": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "nefrob.vscode-just-syntax",
+        "christian-kohler.npm-intellisense"
+      ],
+      "settings": {
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        "eslint.validate": [
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact"
+        ],
+        "editor.formatOnSave": true,
+        "[javascript]": {
+          "editor.formatOnSave": false
+        },
+        "[javascriptreact]": {
+          "editor.formatOnSave": false
+        },
+        "[typescript]": {
+          "editor.formatOnSave": false
+        },
+        "[typescriptreact]": {
+          "editor.formatOnSave": false
+        },
+        "prettier-eslint.eslintIntegration": true
+      }
+    }
+  },
+  "forwardPorts": [5173],
+  "postCreateCommand": "npm install && npm run prepare"
+}
