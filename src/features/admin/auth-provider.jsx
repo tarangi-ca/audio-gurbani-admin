@@ -3,7 +3,9 @@ import PropTypes from "prop-types"
 import { AuthContext } from "./use-auth-context"
 
 export const AuthProvider = ({ children }) => {
-    const [token, setToken] = useState(null)
+    const [token, setToken] = useState(
+        () => localStorage.getItem("token") || null
+    )
 
     const signIn = (token) => {
         if (token) {
@@ -23,7 +25,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={(token, signIn, signOut)}>
+        <AuthContext.Provider value={{ token, signIn, signOut }}>
             {children}
         </AuthContext.Provider>
     )

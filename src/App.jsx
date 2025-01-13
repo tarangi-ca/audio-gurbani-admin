@@ -1,15 +1,21 @@
-import PrimeReactProvider from "primereact"
-import "primereact/resources/themes/mira/theme.css"
-import { AuthProvider } from "./features/auth/auth-provider"
+import { Route, Routes } from "react-router"
+import { SignInPage } from "./features/admin/page"
+import { ProtectedRoute } from "./utilities/protected-route"
 
 function App() {
     return (
         <>
-            <PrimeReactProvider>
-                <AuthProvider>
-                    <h1>App</h1>
-                </AuthProvider>
-            </PrimeReactProvider>
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <ProtectedRoute>
+                            <h1>Hello from Protected Route</h1>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route path="/sign-in" element={<SignInPage />} />
+            </Routes>
         </>
     )
 }
