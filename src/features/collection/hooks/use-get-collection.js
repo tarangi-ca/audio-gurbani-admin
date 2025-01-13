@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { QUERY_KEY } from "../index"
-import axios from "axios"
+import axios from "../../../utilities/axios"
 
 export function useCollectionDetail(id) {
     return useQuery({
