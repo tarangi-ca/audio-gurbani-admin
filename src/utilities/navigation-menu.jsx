@@ -3,15 +3,16 @@ import PropTypes from "prop-types"
 import { useNavigate } from "react-router"
 import { QUERY_KEY as ARTIST_QUERY_KEY } from "../features/artist"
 import { QUERY_KEY as COLLECTION_QUERY_KEY } from "../features/collection"
+import { QUERY_KEY as AUDIO_QUERY_KEY } from "../features/audio"
 
 function NavigationBrand() {
     return <h3 className="m-0 px-3 py-0">Audio Gurbani</h3>
 }
 
-function NavigationItem({ key, label, command }) {
+function NavigationItem({ index, label, command }) {
     return (
         <a
-            key={key}
+            key={index}
             href="#"
             onClick={command}
             className="no-underline text-color-secondary"
@@ -22,7 +23,7 @@ function NavigationItem({ key, label, command }) {
 }
 
 NavigationItem.propTypes = {
-    key: PropTypes.number.isRequired,
+    index: PropTypes.number.isRequired,
     label: PropTypes.string.isRequired,
     command: PropTypes.func,
 }
@@ -40,13 +41,19 @@ function NavigationItems() {
         },
         {
             label: "Audios",
+            command: () => navigate(`/${AUDIO_QUERY_KEY}`),
         },
     ]
 
     return (
         <div className="flex gap-3 p-2">
             {items.map(({ label, command }, index) => (
-                <NavigationItem key={index} label={label} command={command} />
+                <NavigationItem
+                    key={index}
+                    index={index}
+                    label={label}
+                    command={command}
+                />
             ))}
         </div>
     )

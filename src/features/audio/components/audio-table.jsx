@@ -2,13 +2,13 @@ import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { Skeleton } from "primereact/skeleton"
 import { Button } from "primereact/button"
-import { useListCollections } from "../hooks/use-get-collections"
+import { useListAudios } from "../hooks/use-get-audios"
 import PropTypes from "prop-types"
-import { useDeleteCollection } from "../hooks/use-delete-collection"
+import { useDeleteAudio } from "../hooks/use-delete-audio"
 import { useQueryClient } from "@tanstack/react-query"
 import { QUERY_KEY } from ".."
 
-function CollectionColumn({ field, header, isLoading }) {
+function AudioColumn({ field, header, isLoading }) {
     return (
         <Column
             field={field}
@@ -18,7 +18,7 @@ function CollectionColumn({ field, header, isLoading }) {
     )
 }
 
-CollectionColumn.propTypes = {
+AudioColumn.propTypes = {
     field: PropTypes.string.isRequired,
     header: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
@@ -26,13 +26,12 @@ CollectionColumn.propTypes = {
 
 function DeleteBodyTemplate({ id }) {
     const client = useQueryClient()
-    const { mutate: deleteCollection, isLoading: isLoading } =
-        useDeleteCollection()
+    const { mutate: deleteAudio, isLoading: isLoading } = useDeleteAudio()
 
     const onDelete = (event) => {
         event.preventDefault()
 
-        deleteCollection(
+        deleteAudio(
             { id },
             {
                 onSuccess: () =>
@@ -57,39 +56,32 @@ DeleteBodyTemplate.propTypes = {
     id: PropTypes.string.isRequired,
 }
 
-export function CollectionTable() {
-    const { data: collections, isLoading } = useListCollections()
+export function AudioTable() {
+    const { data: audios, isLoading } = useListAudios()
 
     return (
         <DataTable
             value={
-                isLoading
-                    ? Array.from({ length: 5 }, (v, i) => i)
-                    : collections.data
+                isLoading ? Array.from({ length: 5 }, (v, i) => i) : audios.data
             }
         >
-            <CollectionColumn field="id" header="ID" isLoading={isLoading} />
-            <CollectionColumn
+            <AudioColumn field="id" header="ID" isLoading={isLoading} />
+            <AudioColumn
                 field="displayName"
                 header="Display Name"
                 isLoading={isLoading}
             />
-            <CollectionColumn
-                field="slug"
-                header="Slug"
+            <AudioColumn
+                field="collectionId"
+                header="Collection ID"
                 isLoading={isLoading}
             />
-            <CollectionColumn
-                field="artistId"
-                header="Artist Id"
-                isLoading={isLoading}
-            />
-            <CollectionColumn
+            <AudioColumn
                 field="createdAt"
                 header="Created At"
                 isLoading={isLoading}
             />
-            <CollectionColumn
+            <AudioColumn
                 field="updatedAt"
                 header="Updated At"
                 isLoading={isLoading}

@@ -5,6 +5,8 @@ import { QUERY_KEY as ARTIST_QUERY_KEY } from "./features/artist"
 import { ArtistDashboard } from "./features/artist/pages/artist-dashboard"
 import { CollectionDashboard } from "./features/collection/pages/collection-dashboard"
 import { QUERY_KEY as COLLECTION_QUERY_KEY } from "./features/collection"
+import { AudioDashboard } from "./features/audio/page/audio-dashboard"
+import { QUERY_KEY as AUDIO_QUERY_KEY } from "./features/audio"
 
 function App() {
     return (
@@ -26,6 +28,10 @@ function App() {
                 <Route
                     path={"/" + COLLECTION_QUERY_KEY}
                     element={<CollectionDashboard />}
+                />
+                <Route
+                    path={"/" + AUDIO_QUERY_KEY}
+                    element={<AudioDashboard />}
                 />
             </Routes>
         </>
