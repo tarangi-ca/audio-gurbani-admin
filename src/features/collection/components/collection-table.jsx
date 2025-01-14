@@ -2,13 +2,13 @@ import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { Skeleton } from "primereact/skeleton"
 import { Button } from "primereact/button"
-import { useListArtists } from "../hooks/use-get-artists"
+import { useListCollections } from "../hooks/use-get-collections"
 import PropTypes from "prop-types"
-import { useDeleteArtist } from "../hooks/use-delete-artist"
+import { useDeleteCollection } from "../hooks/use-delete-collection"
 import { useQueryClient } from "@tanstack/react-query"
 import { QUERY_KEY } from ".."
 
-function ArtistColumn({ field, header, isLoading }) {
+function CollectionColumn({ field, header, isLoading }) {
     return (
         <Column
             field={field}
@@ -18,7 +18,7 @@ function ArtistColumn({ field, header, isLoading }) {
     )
 }
 
-ArtistColumn.propTypes = {
+CollectionColumn.propTypes = {
     field: PropTypes.string.isRequired,
     header: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
@@ -26,12 +26,13 @@ ArtistColumn.propTypes = {
 
 function DeleteBodyTemplate({ id }) {
     const client = useQueryClient()
-    const { mutate: deleteArtist, isLoading: isLoading } = useDeleteArtist()
+    const { mutate: deleteCollection, isLoading: isLoading } =
+        useDeleteCollection()
 
     const onDelete = (event) => {
         event.preventDefault()
 
-        deleteArtist(
+        deleteCollection(
             { id },
             {
                 onSuccess: () =>
@@ -56,30 +57,38 @@ DeleteBodyTemplate.propTypes = {
     id: PropTypes.string.isRequired,
 }
 
-export function ArtistTable() {
-    const { data: artists, isLoading } = useListArtists()
+export function CollectionTable() {
+    const { data: collections, isLoading } = useListCollections()
 
     return (
         <DataTable
             value={
                 isLoading
                     ? Array.from({ length: 5 }, (v, i) => i)
-                    : artists.data
+                    : collections.data
             }
         >
-            <ArtistColumn field="id" header="ID" isLoading={isLoading} />
-            <ArtistColumn
+            <CollectionColumn
                 field="displayName"
                 header="Display Name"
                 isLoading={isLoading}
             />
-            <ArtistColumn field="slug" header="Slug" isLoading={isLoading} />
-            <ArtistColumn
+            <CollectionColumn
+                field="slug"
+                header="Slug"
+                isLoading={isLoading}
+            />
+            <CollectionColumn
+                field="artistId"
+                header="Artist Id"
+                isLoading={isLoading}
+            />
+            <CollectionColumn
                 field="createdAt"
                 header="Created At"
                 isLoading={isLoading}
             />
-            <ArtistColumn
+            <CollectionColumn
                 field="updatedAt"
                 header="Updated At"
                 isLoading={isLoading}
