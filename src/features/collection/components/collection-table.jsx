@@ -7,6 +7,8 @@ import PropTypes from "prop-types"
 import { useDeleteCollection } from "../hooks/use-delete-collection"
 import { useQueryClient } from "@tanstack/react-query"
 import { QUERY_KEY } from ".."
+import { Avatar } from "primereact/avatar"
+import { useFileDetail } from "../../file/hooks/use-get-file"
 
 function CollectionColumn({ field, header, isLoading }) {
     return (
@@ -57,6 +59,39 @@ DeleteBodyTemplate.propTypes = {
     id: PropTypes.string.isRequired,
 }
 
+function ImageBodyTemplate({ id, displayName }) {
+    const { data: image, isLoading } = useFileDetail("images", id)
+
+    if (isLoading) {
+        return <Skeleton size="4rem" />
+    }
+
+    return (
+        <Avatar
+            image={image}
+            imageAlt={displayName}
+            alt={displayName}
+            size="xlarge"
+        />
+    )
+}
+
+ImageBodyTemplate.propTypes = {
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+}
+
+const formatDateTime = (value) => {
+    if (!value) return ""
+    return new Date(value).toLocaleString("en-US", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+    })
+}
+
 export function CollectionTable() {
     const { data: collections, isLoading } = useListCollections()
 
@@ -68,6 +103,11 @@ export function CollectionTable() {
                     : collections.data
             }
         >
+            <Column
+                header="Cover Image"
+                body={ImageBodyTemplate}
+                exportable={false}
+            />
             <CollectionColumn field="id" header="ID" isLoading={isLoading} />
             <CollectionColumn
                 field="displayName"
@@ -84,15 +124,17 @@ export function CollectionTable() {
                 header="Artist Id"
                 isLoading={isLoading}
             />
-            <CollectionColumn
+            <CollectionTable
                 field="createdAt"
                 header="Created At"
                 isLoading={isLoading}
+                body={({ createdAt }) => formatDateTime(createdAt)}
             />
-            <CollectionColumn
+            <CollectionTable
                 field="updatedAt"
                 header="Updated At"
                 isLoading={isLoading}
+                body={({ updatedAt }) => formatDateTime(updatedAt)}
             />
             <Column body={DeleteBodyTemplate} exportable={false} />
         </DataTable>

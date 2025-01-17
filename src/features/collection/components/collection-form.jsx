@@ -4,11 +4,13 @@ import { useState } from "react"
 import { useCreateCollection } from "../hooks/use-create-collection"
 import { QUERY_KEY } from ".."
 import { useQueryClient } from "@tanstack/react-query"
+import { FileUpload } from "primereact/fileupload"
 
 export function CreateCollectionForm() {
     const [displayName, setDisplayName] = useState("")
     const [slug, setSlug] = useState("")
     const [artistId, setArtistId] = useState("")
+    const [file, setSelectedFile] = useState(null)
 
     const { mutate: createCollection, isLoading, error } = useCreateCollection()
     const client = useQueryClient()
@@ -17,7 +19,7 @@ export function CreateCollectionForm() {
         event.preventDefault()
 
         createCollection(
-            { displayName, slug, artistId },
+            { file, displayName, slug, artistId },
             {
                 onSuccess: () =>
                     client.invalidateQueries({ queryKey: [QUERY_KEY] }),
@@ -52,6 +54,20 @@ export function CreateCollectionForm() {
                     value={artistId}
                     onChange={(event) => setArtistId(event.target.value)}
                     disabled={isLoading}
+                />
+            </div>
+            <div className="flex flex-column gap-3">
+                <label>Cover Image</label>
+                <FileUpload
+                    mode="basic"
+                    accept="image/*"
+                    maxFileSize={10000000} // 10MB max file size
+                    chooseLabel="Choose Cover Photo"
+                    className="w-full"
+                    auto={false}
+                    customUpload
+                    disabled={isLoading}
+                    onSelect={(event) => setSelectedFile(event.files[0])}
                 />
             </div>
             <div className="flex flex-column gap-3">
