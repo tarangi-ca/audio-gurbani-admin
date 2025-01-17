@@ -1,5 +1,6 @@
 import { InputText } from "primereact/inputtext"
 import { Button } from "primereact/button"
+import { FileUpload } from "primereact/fileupload"
 import { useState } from "react"
 import { useCreateArtist } from "../hooks/use-create-artist"
 import { QUERY_KEY } from ".."
@@ -8,6 +9,7 @@ import { useQueryClient } from "@tanstack/react-query"
 export function CreateArtistForm() {
     const [displayName, setDisplayName] = useState("")
     const [slug, setSlug] = useState("")
+    const [file, setSelectedFile] = useState(null)
 
     const { mutate: createArtist, isLoading, error } = useCreateArtist()
     const client = useQueryClient()
@@ -16,7 +18,7 @@ export function CreateArtistForm() {
         event.preventDefault()
 
         createArtist(
-            { displayName, slug },
+            { file, displayName, slug },
             {
                 onSuccess: () =>
                     client.invalidateQueries({ queryKey: [QUERY_KEY] }),
@@ -42,6 +44,20 @@ export function CreateArtistForm() {
                     value={slug}
                     onChange={(event) => setSlug(event.target.value)}
                     disabled={isLoading}
+                />
+            </div>
+            <div className="flex flex-column gap-3">
+                <label>Cover Image</label>
+                <FileUpload
+                    mode="basic"
+                    accept="image/*"
+                    maxFileSize={10000000} // 10MB max file size
+                    chooseLabel="Choose Cover Photo"
+                    className="w-full"
+                    auto={false}
+                    customUpload
+                    disabled={isLoading}
+                    onSelect={(event) => setSelectedFile(event.files[0])}
                 />
             </div>
             <div className="flex flex-column gap-3">
