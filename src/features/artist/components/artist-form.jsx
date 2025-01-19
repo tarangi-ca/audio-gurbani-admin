@@ -5,10 +5,12 @@ import { useState } from "react"
 import { useCreateArtist } from "../hooks/use-create-artist"
 import { QUERY_KEY } from ".."
 import { useQueryClient } from "@tanstack/react-query"
+import { InputTextarea } from "primereact/inputtextarea"
 
 export function CreateArtistForm() {
     const [displayName, setDisplayName] = useState("")
     const [slug, setSlug] = useState("")
+    const [description, setDescription] = useState("")
     const [file, setSelectedFile] = useState(null)
 
     const { mutate: createArtist, isLoading, error } = useCreateArtist()
@@ -18,7 +20,7 @@ export function CreateArtistForm() {
         event.preventDefault()
 
         createArtist(
-            { file, displayName, slug },
+            { file, displayName, slug, description },
             {
                 onSuccess: () =>
                     client.invalidateQueries({ queryKey: [QUERY_KEY] }),
@@ -47,8 +49,18 @@ export function CreateArtistForm() {
                 />
             </div>
             <div className="flex flex-column gap-3">
-                <label>Cover Image</label>
+                <label htmlFor="description">Description</label>
+                <InputTextarea
+                    id="description"
+                    value={description}
+                    onChange={(event) => setDescription(event.target.value)}
+                    disabled={isLoading}
+                />
+            </div>
+            <div className="flex flex-column gap-3">
+                <label htmlFor="file">Cover Image</label>
                 <FileUpload
+                    id="file"
                     mode="basic"
                     accept="image/*"
                     maxFileSize={10000000} // 10MB max file size

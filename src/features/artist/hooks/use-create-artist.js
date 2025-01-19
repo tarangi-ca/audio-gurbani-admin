@@ -7,14 +7,14 @@ export const useCreateArtist = () => {
     const { mutate: createFile, data, isLoading, error } = useCreateFile()
 
     return useMutation({
-        mutationFn: async ({ file, displayName, slug }) => {
+        mutationFn: async ({ file, displayName, slug, description }) => {
             createFile({ file, folder: "images" })
 
             if (!isLoading && !error) {
                 console.log(data)
                 return await axios.post(
                     `/${QUERY_KEY}/`,
-                    { id: data, displayName, slug },
+                    { id: data, displayName, slug, description },
                     {
                         headers: {
                             "Content-Type": "application/json",

@@ -115,6 +115,11 @@ export function ArtistTable() {
                 header="Display Name"
                 isLoading={isLoading}
             />
+            <ArtistColumn
+                field="description"
+                header="Description"
+                isLoading={isLoading}
+            />
             <ArtistColumn field="slug" header="Slug" isLoading={isLoading} />
             <ArtistColumn
                 field="createdAt"
